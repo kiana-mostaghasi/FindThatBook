@@ -21,14 +21,15 @@ public static class OpenLibraryExtensions
             year = y.ValueKind == JsonValueKind.Number ? y.GetInt32() : 0;
         }
 
-        string key = null;
+        string key = string.Empty;
         if (item.TryGetProperty("key", out var k))
         {
-            key = k.GetString() ?? null;
+            key = k.GetString() ?? string.Empty;
         }
 
-        string? coverUrl = null;
-        if (item.TryGetProperty("cover_i", out var c))
+        string coverUrl = string.Empty;
+        if (item.TryGetProperty("cover_i", out var c) &&
+            c.ValueKind == JsonValueKind.Number)
         {
             coverUrl = $"https://covers.openlibrary.org/b/id/{c.GetInt32()}-M.jpg";
         }

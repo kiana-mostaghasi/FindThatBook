@@ -66,7 +66,7 @@ public class BooksController : ControllerBase
                 .ToList();
             var processingTasks = pagedBooks.Select(async book =>
             {
-                string openLibraryUrl = book.Key != null ? $"https://openlibrary.org{book.Key}" : null;
+                string openLibraryUrl = book.Key != string.Empty ? $"https://openlibrary.org{book.Key}" : string.Empty;
                 var explanation = await _aiParser.GenerateExplanationAsync(request.Query, book.Title, book.Author);
                 return new BookDTO
                 {
