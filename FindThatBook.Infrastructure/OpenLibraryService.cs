@@ -60,7 +60,9 @@ public class OpenLibraryService : IBookService
     {
         try
         {
-            var url = $"https://openlibrary.org/search.json?{queryParams}&limit=5";
+            var fields = "key,title,author_name,editions,cover_i,first_publish_year";
+            var url = $"https://openlibrary.org/search.json?{queryParams}&fields={fields}&limit=5";
+            
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
 

@@ -22,9 +22,23 @@ public static class OpenLibraryExtensions
         }
 
         string key = string.Empty;
-        if (item.TryGetProperty("key", out var k))
+        if (item.TryGetProperty("editions", out var editionsObj) && 
+            editionsObj.ValueKind == JsonValueKind.Object &&
+            editionsObj.TryGetProperty("docs", out var editionDocs) &&
+            editionDocs.ValueKind == JsonValueKind.Array)
         {
-            key = k.GetString() ?? string.Empty;
+            foreach (var edition in editionDocs.EnumerateArray())
+            {
+                if (edition.TryGetProperty("key", out var editionKeyProp))
+                {
+                    var editionKey = editionKeyProp.GetString();
+                    if (!string.IsNullOrEmpty(editionKey) && editionKey.StartsWith("/books/"))
+                    {
+                        key = editionKey;
+                        break; 
+                    }
+                }
+            }
         }
 
         string coverUrl = string.Empty;
